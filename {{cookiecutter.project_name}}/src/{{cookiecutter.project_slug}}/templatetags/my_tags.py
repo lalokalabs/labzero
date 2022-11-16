@@ -1,6 +1,6 @@
-from django import template
 import datetime
-# Create the register instance by initializing it with the Library instance.
+from django import template
+# Creating the register instance by initializing it with the Library instance.
 register = template.Library()
 
 """
