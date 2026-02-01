@@ -132,14 +132,7 @@ def get_base_settings(BASE_DIR=None):
 
     # Static files
     STATIC_URL = "/static/"
-    STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
     STATIC_ROOT = os.path.join(BASE_DIR, "public")
-
-    # DJANGOMIX
-    PUBLIC_URL = LARAVELMIX_PUBLIC_URL = STATIC_URL + "mix/build"
-    MANIFEST_DIRECTORY = LARAVELMIX_MANIFEST_DIRECTORY = os.path.join(
-        BASE_DIR, "static/mix/build"
-    )
 
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -174,12 +167,7 @@ def get_base_settings(BASE_DIR=None):
         "USE_L10N": USE_L10N,
         "USE_TZ": USE_TZ,
         "STATIC_URL": STATIC_URL,
-        "STATICFILES_DIRS": STATICFILES_DIRS,
         "STATIC_ROOT": STATIC_ROOT,
-        "PUBLIC_URL": PUBLIC_URL,
-        "LARAVELMIX_PUBLIC_URL": LARAVELMIX_PUBLIC_URL,
-        "MANIFEST_DIRECTORY": MANIFEST_DIRECTORY,
-        "LARAVELMIX_MANIFEST_DIRECTORY": LARAVELMIX_MANIFEST_DIRECTORY,
         "MEDIA_URL": MEDIA_URL,
         "MEDIA_ROOT": MEDIA_ROOT,
         "SIMPLE_CUSTOMIZE_MODE": SIMPLE_CUSTOMIZE_MODE,
