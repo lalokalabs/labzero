@@ -1,14 +1,14 @@
-{% load vite %}
+{% load django_umin_vite %}
 
 <!doctype html>
 <html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="{% vite 'src/myapp/fe/css/app.css' %}" rel="stylesheet">
+  {% vite_asset "css/app.css" "labzero" %}
 </head>
 <body class="font-sans">
   {% block 'content' %}{% endblock %}
-  <script src="{% vite 'src/myapp/fe/js/main.js' %}" type="module"></script>
+  {% vite_asset "js/main.js" "labzero" %}
 </body>
 </html>
