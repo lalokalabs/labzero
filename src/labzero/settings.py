@@ -131,8 +131,9 @@ def get_base_settings(BASE_DIR=None):
     USE_TZ = True
 
     # Static files
-    STATIC_URL = "/static/"
+    STATIC_URL = env.str("STATIC_URL", "/static/")
     STATIC_ROOT = os.path.join(BASE_DIR, "public")
+    DJANGO_UMIN_VITE_DEV_MODE = env.str("DJANGO_UMIN_VITE_DEV_MODE", False)
 
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -168,6 +169,7 @@ def get_base_settings(BASE_DIR=None):
         "USE_TZ": USE_TZ,
         "STATIC_URL": STATIC_URL,
         "STATIC_ROOT": STATIC_ROOT,
+        "DJANGO_UMIN_VITE_DEV_MODE": DJANGO_UMIN_VITE_DEV_MODE,
         "MEDIA_URL": MEDIA_URL,
         "MEDIA_ROOT": MEDIA_ROOT,
         "SIMPLE_CUSTOMIZE_MODE": SIMPLE_CUSTOMIZE_MODE,
