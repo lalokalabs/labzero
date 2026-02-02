@@ -18,10 +18,10 @@ def get_urlpatterns():
         path("", labzero_views.dashboard, name="dashboard"),
         path(
             "login/",
-            LoginView.as_view(template_name="login.html"),
+            labzero_views.LoginView.as_view(),
             name="login",
         ),
-        path("logout/", LogoutView.as_view(), name="logout"),
+        path("logout/", labzero_views.LogoutView.as_view(), name="logout"),
         path("admin/", admin.site.urls),
         path("cms/", include(wagtailadmin_urls)),
         path("documents/", include(wagtaildocs_urls)),
