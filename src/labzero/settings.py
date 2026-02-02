@@ -142,22 +142,63 @@ def get_base_settings(BASE_DIR=None):
     DJANGO_UMIN_VITE_DEV_SERVER_PORT = env.int(
         "DJANGO_UMIN_VITE_DEV_SERVER_PORT", default=5173
     )
-    DJANGO_UMIN_VITE_DEV_SERVER_PROTOCOL = env.str(
-        "DJANGO_UMIN_VITE_DEV_SERVER_PROTOCOL", default="http"
-    )
-    DJANGO_UMIN_VITE_DEV_SERVER_URL = env.str(
-        "DJANGO_UMIN_VITE_DEV_SERVER_URL", default=None
+
+    # Auto-configure for GitHub Codespaces
+    codespace_name = env.str("CODESPACE_NAME", default=None)
+    github_codespaces_port_forwarding_domain = env.str(
+        "GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN", default=None
     )
 
-    # HMR settings for proxied environments (e.g., GitHub Codespaces)
-    DJANGO_UMIN_VITE_HMR_PROTOCOL = env.str(
-        "DJANGO_UMIN_VITE_HMR_PROTOCOL", default=None
-    )
-    DJANGO_UMIN_VITE_HMR_HOST = env.str("DJANGO_UMIN_VITE_HMR_HOST", default=None)
-    DJANGO_UMIN_VITE_HMR_PORT = env.int("DJANGO_UMIN_VITE_HMR_PORT", default=None)
-    DJANGO_UMIN_VITE_HMR_CLIENT_PORT = env.int(
-        "DJANGO_UMIN_VITE_HMR_CLIENT_PORT", default=None
-    )
+    if codespace_name and github_codespaces_port_forwarding_domain:
+        # In Codespaces, construct the forwarded port URL
+        vite_port = DJANGO_UMIN_VITE_DEV_SERVER_PORT
+        DJANGO_UMIN_VITE_DEV_SERVER_URL = env.str(
+            "DJANGO_UMIN_VITE_DEV_SERVER_URL",
+            default=f"https://{codespace_name}-{vite_port}.{github_codespaces_port_forwarding_domain}",
+        )
+        DJANGO_UMIN_VITE_DEV_SERVER_PROTOCOL = env.str(
+            "DJANGO_UMIN_VITE_DEV_SERVER_PROTOCOL", default="https"
+        )
+        DJANGO_UMIN_VITE_HMR_PROTOCOL = env.str(
+            "DJANGO_UMIN_VITE_HMR_PROTOCOL", default="wss"
+        )
+        DJANGO_UMIN_VITE_HMR_HOST = env.str(
+            "DJANGO_UMIN_VITE_HMR_HOST",
+            default=f"{codespace_name}-{vite_port}.{github_codespaces_port_forwarding_domain}",
+        )
+        DJANGO_UMIN_VITE_HMR_PORT = env.int("DJANGO_UMIN_VITE_HMR_PORT", default=443)
+        DJANGO_UMIN_VITE_HMR_CLIENT_PORT = env.int(
+            "DJANGO_UMIN_VITE_HMR_CLIENT_PORT", default=443
+        )
+
+        # Add Codespaces domain to ALLOWED_HOSTS if not already present
+        codespaces_host = f"{codespace_name}.{github_codespaces_port_forwarding_domain}"
+        if codespaces_host not in ALLOWED_HOSTS and "*" not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS.append(codespaces_host)
+
+        # Add Codespaces domain to CSRF_TRUSTED_ORIGINS if not already present
+        codespaces_origin = f"https://{codespaces_host}"
+        csrf_trusted = env.list("CSRF_TRUSTED_ORIGINS", default=[])
+        if codespaces_origin not in csrf_trusted:
+            csrf_trusted.append(codespaces_origin)
+        CSRF_TRUSTED_ORIGINS = csrf_trusted
+    else:
+        # Non-Codespaces defaults
+        DJANGO_UMIN_VITE_DEV_SERVER_PROTOCOL = env.str(
+            "DJANGO_UMIN_VITE_DEV_SERVER_PROTOCOL", default="http"
+        )
+        DJANGO_UMIN_VITE_DEV_SERVER_URL = env.str(
+            "DJANGO_UMIN_VITE_DEV_SERVER_URL", default=None
+        )
+        DJANGO_UMIN_VITE_HMR_PROTOCOL = env.str(
+            "DJANGO_UMIN_VITE_HMR_PROTOCOL", default=None
+        )
+        DJANGO_UMIN_VITE_HMR_HOST = env.str("DJANGO_UMIN_VITE_HMR_HOST", default=None)
+        DJANGO_UMIN_VITE_HMR_PORT = env.int("DJANGO_UMIN_VITE_HMR_PORT", default=None)
+        DJANGO_UMIN_VITE_HMR_CLIENT_PORT = env.int(
+            "DJANGO_UMIN_VITE_HMR_CLIENT_PORT", default=None
+        )
+        CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -167,8 +208,6 @@ def get_base_settings(BASE_DIR=None):
     LOGIN_URL = "/login/"
     LOGIN_REDIRECT_URL = "/app/"
     LOGOUT_REDIRECT_URL = "/"
-
-    CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
     WAGTAIL_SITE_NAME = "LabZero App"
 
