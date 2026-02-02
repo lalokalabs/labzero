@@ -31,7 +31,7 @@ def get_base_settings(BASE_DIR=None):
     )
 
     DEBUG = env.bool("DEBUG", default=False)
-    ALLOWED_HOSTS = ["*"]
+    ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"] if DEBUG else [])
 
     # Application definition
     INSTALLED_APPS = [
@@ -133,7 +133,31 @@ def get_base_settings(BASE_DIR=None):
     # Static files
     STATIC_URL = env.str("STATIC_URL", "/static/")
     STATIC_ROOT = os.path.join(BASE_DIR, "public")
-    DJANGO_UMIN_VITE_DEV_MODE = env.str("DJANGO_UMIN_VITE_DEV_MODE", False)
+
+    # Django UMIN Vite settings (all optional)
+    DJANGO_UMIN_VITE_DEV_MODE = env.bool("DJANGO_UMIN_VITE_DEV_MODE", default=False)
+    DJANGO_UMIN_VITE_DEV_SERVER_HOST = env.str(
+        "DJANGO_UMIN_VITE_DEV_SERVER_HOST", default="0.0.0.0"
+    )
+    DJANGO_UMIN_VITE_DEV_SERVER_PORT = env.int(
+        "DJANGO_UMIN_VITE_DEV_SERVER_PORT", default=5173
+    )
+    DJANGO_UMIN_VITE_DEV_SERVER_PROTOCOL = env.str(
+        "DJANGO_UMIN_VITE_DEV_SERVER_PROTOCOL", default="http"
+    )
+    DJANGO_UMIN_VITE_DEV_SERVER_URL = env.str(
+        "DJANGO_UMIN_VITE_DEV_SERVER_URL", default=None
+    )
+
+    # HMR settings for proxied environments (e.g., GitHub Codespaces)
+    DJANGO_UMIN_VITE_HMR_PROTOCOL = env.str(
+        "DJANGO_UMIN_VITE_HMR_PROTOCOL", default=None
+    )
+    DJANGO_UMIN_VITE_HMR_HOST = env.str("DJANGO_UMIN_VITE_HMR_HOST", default=None)
+    DJANGO_UMIN_VITE_HMR_PORT = env.int("DJANGO_UMIN_VITE_HMR_PORT", default=None)
+    DJANGO_UMIN_VITE_HMR_CLIENT_PORT = env.int(
+        "DJANGO_UMIN_VITE_HMR_CLIENT_PORT", default=None
+    )
 
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -170,6 +194,14 @@ def get_base_settings(BASE_DIR=None):
         "STATIC_URL": STATIC_URL,
         "STATIC_ROOT": STATIC_ROOT,
         "DJANGO_UMIN_VITE_DEV_MODE": DJANGO_UMIN_VITE_DEV_MODE,
+        "DJANGO_UMIN_VITE_DEV_SERVER_HOST": DJANGO_UMIN_VITE_DEV_SERVER_HOST,
+        "DJANGO_UMIN_VITE_DEV_SERVER_PORT": DJANGO_UMIN_VITE_DEV_SERVER_PORT,
+        "DJANGO_UMIN_VITE_DEV_SERVER_PROTOCOL": DJANGO_UMIN_VITE_DEV_SERVER_PROTOCOL,
+        "DJANGO_UMIN_VITE_DEV_SERVER_URL": DJANGO_UMIN_VITE_DEV_SERVER_URL,
+        "DJANGO_UMIN_VITE_HMR_PROTOCOL": DJANGO_UMIN_VITE_HMR_PROTOCOL,
+        "DJANGO_UMIN_VITE_HMR_HOST": DJANGO_UMIN_VITE_HMR_HOST,
+        "DJANGO_UMIN_VITE_HMR_PORT": DJANGO_UMIN_VITE_HMR_PORT,
+        "DJANGO_UMIN_VITE_HMR_CLIENT_PORT": DJANGO_UMIN_VITE_HMR_CLIENT_PORT,
         "MEDIA_URL": MEDIA_URL,
         "MEDIA_ROOT": MEDIA_ROOT,
         "SIMPLE_CUSTOMIZE_MODE": SIMPLE_CUSTOMIZE_MODE,
