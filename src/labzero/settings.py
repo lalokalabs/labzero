@@ -121,7 +121,7 @@ def get_base_settings(BASE_DIR=None):
         },
     ]
 
-    AUTH_USER_MODEL = "labzero.User"
+    AUTH_USER_MODEL = env.str("AUTH_USER_MODEL")
 
     # Internationalization
     LANGUAGE_CODE = "en-us"
