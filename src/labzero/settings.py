@@ -41,6 +41,7 @@ def get_base_settings(BASE_DIR=None):
         "django.contrib.sessions",
         "django.contrib.messages",
         "django.contrib.staticfiles",
+        "django.contrib.postgres",
         "djangomix",
         "django_umin",
         "labzero",
