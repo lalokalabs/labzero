@@ -145,9 +145,12 @@ def get_base_settings(BASE_DIR=None):
     )
 
     # Auto-configure for GitHub Codespaces
-    codespace_name = env.str("CODESPACE_NAME", default=None)
-    github_codespaces_port_forwarding_domain = env.str(
-        "GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN", default=None
+    # Treat the literal string "None" as unset (common in .env files)
+    _codespace_name = env.str("CODESPACE_NAME", default=None)
+    codespace_name = None if _codespace_name in (None, "None", "") else _codespace_name
+    _gcp_domain = env.str("GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN", default=None)
+    github_codespaces_port_forwarding_domain = (
+        None if _gcp_domain in (None, "None", "") else _gcp_domain
     )
 
     if codespace_name and github_codespaces_port_forwarding_domain:
