@@ -6,9 +6,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% vite_asset "css/app.css" "labzero" %}
+  {% block 'extra_head' %}{% endblock %}
 </head>
 <body class="font-sans">
   {% block 'content' %}{% endblock %}
+  {% block 'extra_body' %}{% endblock %}
   {% vite_asset "js/main.js" "labzero" %}
 </body>
 </html>

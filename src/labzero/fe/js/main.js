@@ -1,5 +1,27 @@
 import Swal from 'sweetalert2';
 
+const toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3500,
+  timerProgressBar: true,
+  customClass: {
+    popup: 'rounded-xl shadow-xl',
+  },
+});
+
+function showToast(detail = {}) {
+  if (!detail.message) {
+    return;
+  }
+
+  toast.fire({
+    icon: detail.type || 'success',
+    title: detail.message,
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const showSweetAlertButton = document.getElementById('showSweetAlertButton');
 
@@ -31,4 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+});
+
+document.body.addEventListener('labzero:notify', (event) => {
+  showToast(event.detail);
 });

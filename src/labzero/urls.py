@@ -17,6 +17,11 @@ def get_urlpatterns():
     urlpatterns = [
         path("", labzero_views.dashboard, name="dashboard"),
         path(
+            "profile/",
+            labzero_views.ProfileUpdateView.as_view(crud_view=labzero_views.ProfileCRUD()),
+            name="profile",
+        ),
+        path(
             "login/",
             labzero_views.LoginView.as_view(),
             name="login",

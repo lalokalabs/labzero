@@ -1,0 +1,21 @@
+{% extends "labzero_base.html" %}
+{% load django_umin_vite %}
+
+{% block 'extra_head' %}
+{{ block.super }}
+{% vite_asset "css/app.css" "django_umin" %}
+{% endblock %}
+
+{% block 'page_title' %}Profile Settings{% endblock %}
+
+{% block 'page_content' %}
+<div class="mx-auto max-w-4xl space-y-6">
+    {% include "django_umin/includes/messages.html" %}
+    {% include "django_umin/includes/form_page.html" %}
+</div>
+{% endblock %}
+
+{% block 'extra_body' %}
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+{% endblock %}
